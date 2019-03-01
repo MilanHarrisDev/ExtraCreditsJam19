@@ -36,5 +36,6 @@ MonoBehaviour:
   - RPC_LoadedGameScene
   - RPC_AddGraphic
   - RPC_SetRole
+  - RPC_SetCurrentRole
   DisableAutoOpenWizard: 1
   ShowSettings: 1

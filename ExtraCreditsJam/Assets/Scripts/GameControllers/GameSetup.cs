@@ -6,7 +6,11 @@ public class GameSetup : MonoBehaviour
 {
     public static GameSetup GS;
 
-    public Transform[] spawnPoints;
+    public LayerMask racerCamMask;
+    public LayerMask sharkCamMask;
+
+    public Transform racerSpawn;
+    public Transform[] sharkSpawnPoints;
 
     private void OnEnable()
     {

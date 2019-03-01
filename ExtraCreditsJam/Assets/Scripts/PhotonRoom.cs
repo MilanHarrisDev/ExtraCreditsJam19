@@ -158,8 +158,6 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        SelectStartingRoles();
-
         if (MultiplayerSettings.mpSettings.delayStart)
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
@@ -201,14 +199,18 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     {
         currentScene = scene.buildIndex;
-        if(currentScene == MultiplayerSettings.mpSettings.gameScene)
+        if (currentScene == MultiplayerSettings.mpSettings.gameScene)
         {
             isGameLoaded = true;
 
             if (MultiplayerSettings.mpSettings.delayStart)
+            {
                 PV.RPC("RPC_LoadedGameScene", RpcTarget.MasterClient);
+            }
             else
                 RPC_CreatePlayer();
+
+            SelectStartingRoles();
         }
     }
 
