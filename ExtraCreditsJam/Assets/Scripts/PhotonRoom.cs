@@ -12,6 +12,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     public static PhotonRoom room;
     private PhotonView PV;
 
+    public GameObject myPlayer;
+
     public bool isGameLoaded;
     public int currentScene;
 
