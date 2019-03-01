@@ -468,7 +468,7 @@ MonoBehaviour:
   deccel: 8
   moveSpeed: 0
   maxSpeed: 12
-  turnSpeed: 30
+  turnSpeed: 12
 --- !u!114 &254895391796157033
 MonoBehaviour:
   m_ObjectHideFlags: 0

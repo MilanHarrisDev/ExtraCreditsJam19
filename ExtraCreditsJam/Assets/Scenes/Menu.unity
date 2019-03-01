@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931fad4e830c94347ad4ce9b55d76da8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myPlayer: {fileID: 0}
   isGameLoaded: 0
   currentScene: 0
   playersInRoom: 0

@@ -27,12 +27,12 @@ public class CameraFollow : MonoBehaviour
             camera = Camera.main.transform;
     }
 
-    void Update()
+    private void FixedUpdate()
     {
         if (target && follow)
         {
-            camera.position = Vector3.Lerp(camera.position, target.position, moveSpeed * Time.deltaTime);
-            camera.rotation = Quaternion.Lerp(camera.rotation, target.rotation, rotateSpeed * Time.deltaTime);
+            camera.position = Vector3.Lerp(camera.position, target.position, moveSpeed * Time.fixedDeltaTime);
+            camera.rotation = Quaternion.Lerp(camera.rotation, target.rotation, rotateSpeed * Time.fixedDeltaTime);
         }
     }
 

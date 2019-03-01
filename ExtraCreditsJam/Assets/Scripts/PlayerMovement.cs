@@ -32,13 +32,11 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = Mathf.Clamp(moveSpeed, 0, maxSpeed);
 
             if (Input.GetAxis("Horizontal") > 0)
-            {
                 Turn(1);
-            }
             else if (Input.GetAxis("Horizontal") < 0)
-            {
                 Turn(-1);
-            }
+            else
+                Turn(0);
 
             rb.velocity = transform.forward * moveSpeed;
         }
@@ -46,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Turn(int dir)
     {
-        rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.Euler(rb.rotation.eulerAngles + new Vector3(0, turnSpeed * dir, 0)), Time.deltaTime);
+        rb.rotation = Quaternion.Lerp(rb.rotation, Quaternion.Euler(rb.rotation.eulerAngles + new Vector3(0, 5f * dir, 0)), turnSpeed * Time.deltaTime);
         rb.rotation = Quaternion.Euler(0, rb.rotation.eulerAngles.y, 0);
     }
 }
