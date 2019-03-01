@@ -158,10 +158,35 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        if(MultiplayerSettings.mpSettings.delayStart)
+        SelectStartingRoles();
+
+        if (MultiplayerSettings.mpSettings.delayStart)
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
         PhotonNetwork.LoadLevel(MultiplayerSettings.mpSettings.gameScene);
+    }
+
+    private void SelectStartingRoles()
+    {
+        int racer = Random.Range(0, photonPlayers.Length);
+        int sharkColor = 1;
+
+        for(int i = 0; i < photonPlayers.Length; i++)
+        {
+            if (i == racer)
+                PV.RPC("RPC_SetRole", photonPlayers[i], 0);
+            else
+            {
+                PV.RPC("RPC_SetRole", photonPlayers[i], sharkColor);
+                sharkColor++;
+            }
+        }
+    }
+
+    [PunRPC]
+    private void RPC_SetRole(int role)
+    {
+        PlayerInfo.PI.selectedGraphic = role;
     }
 
     private void RestartTimer()

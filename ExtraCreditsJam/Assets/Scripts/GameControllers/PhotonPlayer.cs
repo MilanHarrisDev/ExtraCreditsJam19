@@ -24,9 +24,4 @@ public class PhotonPlayer : MonoBehaviour
             camFollow.SetTarget(myAvatar.transform.Find("CameraTrack"));
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
 }
