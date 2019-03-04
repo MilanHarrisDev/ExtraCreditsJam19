@@ -1,6 +1,7 @@
 ﻿using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public enum ObstacleType
@@ -60,8 +61,24 @@ public class ObstaclePlacer : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                // Instantiate(objectToinstantiate, hit.point, Quaternion.identity);
+                switch (type)
+                {
+                    case ObstacleType.GUN:
+                        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Obstacle_Ice"), GetYZero(hit.point), Quaternion.identity, 0);
+                        break;
+                    case ObstacleType.ICE:
+                        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Obstacle_Ice"), GetYZero(hit.point), Quaternion.identity, 0);
+                        break;
+                    case ObstacleType.MINE:
+                        PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "Obstacle_Ice"), GetYZero(hit.point), Quaternion.identity, 0);
+                        break;
+                }
             }
         }
+    }
+
+    private Vector3 GetYZero(Vector3 point)
+    {
+        return new Vector3(point.x, 0, point.z);
     }
 }

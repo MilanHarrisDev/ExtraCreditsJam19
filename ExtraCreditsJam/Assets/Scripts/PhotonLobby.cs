@@ -15,6 +15,8 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     private Button cancelButton;
     [SerializeField]
     private Text statusText;
+    [SerializeField]
+    private Text playerText;
 
     private void Awake()
     {
@@ -81,6 +83,7 @@ public class PhotonLobby : MonoBehaviourPunCallbacks
     {
         cancelButton.gameObject.SetActive(false);
         playButton.gameObject.SetActive(true);
+        playerText.text = "";
         PhotonNetwork.LeaveRoom();
     }
 }

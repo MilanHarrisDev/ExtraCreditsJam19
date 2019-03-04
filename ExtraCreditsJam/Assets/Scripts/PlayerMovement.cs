@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     public float turnSpeed = 3f;
     private Rigidbody rb;
 
+    private bool slow = false;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,6 +31,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if (PV.IsMine)
         {
+            RaycastHit boundaryCastHit;
+            Ray boundaryRay = new Ray(transform.position, transform.forward);
+            Debug.DrawRay(boundaryRay.origin, boundaryRay.direction, Color.red);
+
+            if (Physics.SphereCast(boundaryRay, .2f, out boundaryCastHit,11))
+            {
+                maxSpeed = 4f;
+                Debug.Log("slowing");
+            }
+            else
+                maxSpeed = 15f;
+
             if (Input.GetAxis("Vertical") > 0)
                 moveSpeed += accel * Time.deltaTime;
             else
@@ -37,8 +51,6 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = Mathf.Clamp(moveSpeed, 0, maxSpeed);
 
             turnSpeed = Mathf.Lerp(maxTurnSpeed, maxTurnSpeed / 1.5f, moveSpeed /(maxSpeed * 1.2f));
-
-            Debug.Log("turnSpeed = " + turnSpeed);
 
             if (Input.GetAxis("Horizontal") > 0)
                 Turn(1);

@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     //Room info
     public static PhotonRoom room;
     private PhotonView PV;
+
+    public Text playerText;
 
     public GameObject myPlayer;
 
@@ -21,6 +24,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     Player[] photonPlayers;
     public int playersInRoom;
     public int myNumberInRoom;
+
+    public Dictionary<string, float> playerTimes;
 
     public int playersInGame;
 
@@ -50,6 +55,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private void Update()
     {
+        if (!MultiplayerSettings.mpSettings)
+            return;
         if (MultiplayerSettings.mpSettings.delayStart)
         {
             if (playersInRoom == 1)
@@ -95,8 +102,9 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         readyToCount = false;
         readyToStart = false;
         lessThanMaxPlayers = startingTime;
-        atMaxPlayers = 6f;
+        atMaxPlayers = 15f;
         timeToStart = startingTime;
+        playerText.text = "";
     }
 
     public override void OnJoinedRoom()
@@ -107,7 +115,9 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
         playersInRoom = photonPlayers.Length;
         myNumberInRoom = playersInRoom;
 
-        PhotonNetwork.NickName = myNumberInRoom.ToString();
+        PhotonNetwork.NickName = "Player" + myNumberInRoom.ToString();
+        playerText.text = "you are: " + PhotonNetwork.LocalPlayer.NickName;
+
         if (MultiplayerSettings.mpSettings.delayStart)
         {
             PhotonLobby.lobby.SetStatusText(playersInRoom + "/" + MultiplayerSettings.mpSettings.maxPlayers + " players");
@@ -116,6 +126,8 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
             if (playersInRoom == MultiplayerSettings.mpSettings.maxPlayers)
             {
+
+
                 readyToStart = true;
                 if (!PhotonNetwork.IsMasterClient) //check if host
                     return;
@@ -154,6 +166,9 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private void StartGame()
     {
+        playerTimes = new Dictionary<string, float>();
+        PV.RPC("RPC_UpdatePlayerTime", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName, 0f);
+
         isGameLoaded = true;
         if (!PhotonNetwork.IsMasterClient)
             return;
@@ -162,6 +177,26 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
             PhotonNetwork.CurrentRoom.IsOpen = false;
 
         PhotonNetwork.LoadLevel(MultiplayerSettings.mpSettings.gameScene);
+    }
+
+    public void UpdatePlayerTime(string name, float time)
+    {
+        PV.RPC("RPC_UpdatePlayerTime", RpcTarget.All, name, time);
+    }
+
+    [PunRPC]
+    private void RPC_UpdatePlayerTime(string name, float time)
+    {
+        if (playerTimes.ContainsKey(name))
+        {
+            playerTimes[name] = time;
+        }
+        else
+            playerTimes.Add(name, time);
+
+        Debug.Log("Added time for " + name + ": " + time);
+
+
     }
 
     private void SelectStartingRoles()
@@ -191,7 +226,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     {
         lessThanMaxPlayers = startingTime;
         timeToStart = startingTime;
-        atMaxPlayers = 6f;
+        atMaxPlayers = 15f;
         readyToCount = false;
         readyToStart = false;
     }

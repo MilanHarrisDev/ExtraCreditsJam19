@@ -106,8 +106,8 @@ public class RailManager : MonoBehaviour
 
                 currentPos += 1;
             }
-
-            railObject.position = Vector3.Lerp(railPoints[currentPoint].position, railPoints[currentTarget].position, currentPos);
+            if(railObject)
+                railObject.position = Vector3.Lerp(railPoints[currentPoint].position, railPoints[currentTarget].position, currentPos);
         }
     }
 
