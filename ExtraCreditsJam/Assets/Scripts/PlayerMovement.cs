@@ -7,10 +7,11 @@ public class PlayerMovement : MonoBehaviour
 {
     private PhotonView PV;
 
-    public float accel = 1f;
-    public float deccel = 4f;
+    public float accel = 15f;
+    public float deccel = 7f;
     public float moveSpeed = 0f;
-    public float maxSpeed = 5f;
+    public float maxSpeed = 25f;
+    public float maxTurnSpeed = 30f;
     public float turnSpeed = 3f;
     private Rigidbody rb;
 
@@ -30,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
                 moveSpeed -= deccel * Time.deltaTime;
 
             moveSpeed = Mathf.Clamp(moveSpeed, 0, maxSpeed);
+
+            turnSpeed = Mathf.Lerp(maxTurnSpeed, maxTurnSpeed / 1.5f, moveSpeed /(maxSpeed * 1.2f));
 
             if (Input.GetAxis("Horizontal") > 0)
                 Turn(1);

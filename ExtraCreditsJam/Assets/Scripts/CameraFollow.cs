@@ -129,6 +129,7 @@ public class CameraFollow : MonoBehaviour
             foreach (Renderer r in renderers)
                 r.enabled = false;
         }
+
         //camera.GetComponent<Camera>().cullingMask = (type == 1) ? GameSetup.GS.sharkCamMask : GameSetup.GS.racerCamMask;
     }
 }

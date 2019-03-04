@@ -19,6 +19,20 @@ public class AvatarSetup : MonoBehaviour
 
             if (PlayerInfo.PI.selectedGraphic == 1)
                 GetComponent<PlayerMovement>().enabled = false;
+
+            
+        }
+    }
+
+    public void SetupRail()
+    {
+        if (PV.IsMine)
+        {
+            if (graphicValue != 0)
+            {
+                RailManager.RM.SetRailObject(transform);
+                RailManager.RM.controlling = true;
+            }
         }
     }
 
@@ -46,6 +60,7 @@ public class AvatarSetup : MonoBehaviour
         graphicValue = whichGraphic;
         myGraphic = Instantiate(PlayerInfo.PI.characterGraphics[whichGraphic], transform.position, transform.rotation, transform);
 
-        transform.position = (whichGraphic == 0) ? GameSetup.GS.racerSpawn.position : GameSetup.GS.sharkSpawnPoints[whichGraphic - 1].position;
+        transform.position = (whichGraphic == 0) ? GameSetup.GS.racerSpawn.position : GameSetup.GS.sharkSpawnPoints[0].position;
+        SetupRail();
     }
 }
