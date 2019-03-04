@@ -9,9 +9,13 @@ public class AvatarSetup : MonoBehaviour
     public int graphicValue;
     public GameObject myGraphic;
 
-    private void Start()
+    private void Awake()
     {
         PV = GetComponent<PhotonView>();
+    }
+
+    private void Start()
+    {
         if (PV.IsMine)
         {
             PV.RPC("RPC_AddGraphic", RpcTarget.AllBuffered, PlayerInfo.PI.selectedGraphic);
@@ -19,8 +23,6 @@ public class AvatarSetup : MonoBehaviour
 
             if (PlayerInfo.PI.selectedGraphic == 1)
                 GetComponent<PlayerMovement>().enabled = false;
-
-            
         }
     }
 
@@ -28,8 +30,10 @@ public class AvatarSetup : MonoBehaviour
     {
         if (PV.IsMine)
         {
-            if (graphicValue != 0)
+            if (graphicValue != 0) //if is obstacle placer
             {
+                gameObject.AddComponent<ObstaclePlacer>().Init((ObstacleType)(graphicValue - 1));
+
                 RailManager.RM.SetRailObject(transform);
                 RailManager.RM.controlling = true;
             }

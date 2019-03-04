@@ -13,7 +13,7 @@ public class RailManager : MonoBehaviour
     private float totalDist = 0;
 
     private int direction = 0;
-    private float speed = .07f;
+    private float speed = .03f;
 
     [SerializeField]
     private int currentPoint;
@@ -31,6 +31,7 @@ public class RailManager : MonoBehaviour
 
     private void Awake()
     {
+        speed = .05f;
     }
 
     private void Start()
@@ -70,19 +71,39 @@ public class RailManager : MonoBehaviour
         if(direction != 0)
         {
             currentPos += direction * ((Time.deltaTime * speed) / (currentDistance / totalDist));
-            Debug.Log(currentPos);
 
             if (currentPos >= 1)
             {
-                currentPoint++;
-                currentTarget = currentPoint + 1;
+                if (currentPoint == railPoints.Length - 1)
+                {
+                    currentPoint = 0;
+                    currentTarget = currentPoint + 1;
+                }
+                else if (currentPoint == railPoints.Length - 2)
+                {
+                    currentPoint++;
+                    currentTarget = 0;
+                }
+                else
+                {
+                    currentPoint++;
+                    currentTarget = currentPoint + 1;
+                }
 
                 currentPos -= 1;
             }
             else if (currentPos <= 0)
             {
-                currentTarget--;
-                currentPoint--;
+                if (currentPoint == 0)
+                    currentPoint = railPoints.Length - 1;
+                else
+                    currentPoint--;
+
+                if(currentTarget == 0)
+                    currentTarget = railPoints.Length - 1;
+                else
+                    currentTarget--;
+
                 currentPos += 1;
             }
 

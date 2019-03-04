@@ -19,6 +19,10 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+
+        accel = 10f;
+        maxSpeed = 15f;
+        maxTurnSpeed = 8f;
     }
 
     private void Update()
@@ -33,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = Mathf.Clamp(moveSpeed, 0, maxSpeed);
 
             turnSpeed = Mathf.Lerp(maxTurnSpeed, maxTurnSpeed / 1.5f, moveSpeed /(maxSpeed * 1.2f));
+
+            Debug.Log("turnSpeed = " + turnSpeed);
 
             if (Input.GetAxis("Horizontal") > 0)
                 Turn(1);
